@@ -49,11 +49,11 @@ d3.json(queryUrl, function (data) {
         } else if (data.properties.mag > 3) {
             color = "#E31A1C"
         } else if (data.properties.mag > 2) {
-            color = "#ebc334"
+            color = "#FC4E2A"
         } else if (data.properties.mag > 1) {
-            color = "#ebdf34"
+            color = "#FD8D3C"
         } else if (data.properties.mag > 0) {
-            color = "#6eeb34"
+            color = "#FEB24C"
         }
         // console.log([data.geometry.coordinates[0],data.geometry.coordinates[1]])
         L.circle([data.geometry.coordinates[1], data.geometry.coordinates[0]],
@@ -65,10 +65,39 @@ d3.json(queryUrl, function (data) {
                
             }
         ).bindPopup(`<h1>${data.properties.place}</h1> Magnitude: ${data.properties.mag}`).addTo(myMap)
+        
+  
     })
 
 });
+function getColor(d) {
+    return d > 5 ? '#800026' :
+        d > 4 ? '#BD0026' :
+            d > 3 ? '#E31A1C' :
+                d > 5 ? '#FC4E2A' :
+                    d > 1 ? '#FD8D3C' :
+                        d > 0 ? '#FEB24C' :
+                                '#FFEDA0';
+}
+var legend = L.control({ position: 'bottomright' });
 
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 1, 2, 3, 4, 5],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i><br> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(myMap);
 
 
 L.control.layers(baseMaps).addTo(myMap);
