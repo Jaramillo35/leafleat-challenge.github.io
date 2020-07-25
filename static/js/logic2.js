@@ -18,8 +18,8 @@ let satellite = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}
     accessToken: API_KEY
 });
 var myMap = L.map("map", {
-    center: [15.5994, -28.6731],
-    zoom: 3,
+    center: [48, -102],
+    zoom: 4,
     layers: [satellite]
 });
 
